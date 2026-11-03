@@ -94,6 +94,7 @@ export const allProviders = (setEmpty?: any) => {
     { value: GmbSettingsDto, name: 'gmb' },
     { value: FarcasterDto, name: 'wrapcast' },
     { value: FacebookDto, name: 'facebook' },
+    { value: FacebookGroupsSettingsDto, name: 'facebook-groups' },
     { value: setEmpty, name: 'threads' },
     { value: setEmpty, name: 'mastodon' },
     { value: setEmpty, name: 'bluesky' },

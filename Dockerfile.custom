@@ -7,6 +7,7 @@ COPY libraries/nestjs-libraries/src/ /app/libraries/nestjs-libraries/src/
 COPY apps/frontend/src/components/new-launch/ /app/apps/frontend/src/components/new-launch/
 COPY apps/frontend/public/icons/platforms/ /app/apps/frontend/public/icons/platforms/
 
-# Reconstruir backend y frontend limpiando dist previo
+# Reconstruir backend, orchestrator y frontend limpiando dist previo
 RUN rm -rf apps/backend/dist && pnpm --filter ./apps/backend run build
+RUN rm -rf apps/orchestrator/dist && pnpm --filter ./apps/orchestrator run build
 RUN pnpm --filter ./apps/frontend run build
