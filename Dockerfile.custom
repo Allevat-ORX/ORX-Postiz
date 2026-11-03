@@ -3,11 +3,10 @@ FROM ghcr.io/gitroomhq/postiz-app:v2.25.3
 WORKDIR /app
 
 # Copiar archivos fuente actualizados
-COPY libraries/nestjs-libraries/src/dtos/posts/providers-settings/ /app/libraries/nestjs-libraries/src/dtos/posts/providers-settings/
-COPY libraries/nestjs-libraries/src/integrations/ /app/libraries/nestjs-libraries/src/integrations/
-COPY apps/frontend/src/components/new-launch/providers/ /app/apps/frontend/src/components/new-launch/providers/
+COPY libraries/nestjs-libraries/src/ /app/libraries/nestjs-libraries/src/
+COPY apps/frontend/src/components/new-launch/ /app/apps/frontend/src/components/new-launch/
 COPY apps/frontend/public/icons/platforms/ /app/apps/frontend/public/icons/platforms/
 
-# Reconstruir backend y frontend
-RUN pnpm --filter ./apps/backend run build
+# Reconstruir backend y frontend limpiando dist previo
+RUN rm -rf apps/backend/dist && pnpm --filter ./apps/backend run build
 RUN pnpm --filter ./apps/frontend run build

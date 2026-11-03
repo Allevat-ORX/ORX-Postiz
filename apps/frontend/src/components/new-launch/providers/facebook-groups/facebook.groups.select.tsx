@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useState, useMemo } from 'react';
+import React, { FC, useState, useMemo, useEffect } from 'react';
 import { useSettings } from '@gitroom/frontend/components/launches/helpers/use.values';
 
 export interface GroupItem {
@@ -78,6 +78,10 @@ export const ALL_GROUPS: GroupItem[] = [
 
 export const FacebookGroupsSelect: FC = () => {
   const form = useSettings();
+
+  useEffect(() => {
+    form.register('selected_groups');
+  }, [form]);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'ALL' | 'SLP' | 'QRO'>('ALL');
 

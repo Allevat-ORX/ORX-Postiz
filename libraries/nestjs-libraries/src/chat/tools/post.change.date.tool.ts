@@ -55,7 +55,8 @@ Do NOT use integrationSchedulePostTool when the user asks to move, reschedule, o
 
           const updated: string[] = [];
           if (post.group) {
-            const groupPosts = await this._postsService.getPostsByGroup(organizationId, post.group);
+            const groupData = await this._postsService.getPostsByGroup(organizationId, post.group);
+            const groupPosts = (groupData as any).posts || [post];
             for (const p of groupPosts) {
               await this._postsService.changeDate(organizationId, p.id, inputData.date, 'update');
               updated.push(p.id);
