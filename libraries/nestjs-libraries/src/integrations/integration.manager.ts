@@ -1,3 +1,4 @@
+import { FacebookGroupsProvider } from '@gitroom/nestjs-libraries/integrations/social/facebook.groups.provider';
 import 'reflect-metadata';
 
 import { Injectable } from '@nestjs/common';
@@ -47,6 +48,7 @@ export const socialIntegrationList: Array<SocialAbstract & SocialProvider> = [
   new InstagramProvider(),
   new InstagramStandaloneProvider(),
   new FacebookProvider(),
+  new FacebookGroupsProvider(),
   new ThreadsProvider(),
   new YoutubeProvider(),
   new GmbProvider(),
