@@ -79,7 +79,7 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const toaster = useToaster();
   const modal = useModals();
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState(true);
   const [mobileTab, setMobileTab] = useState<'edit' | 'preview'>('edit');
   const [mobileSheet, setMobileSheet] = useState<
     'channels' | 'settings' | 'tags' | 'repeat' | 'date' | null
@@ -1033,7 +1033,7 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
                     'pb-[20px] px-[20px] select-none',
                     showSettings &&
                       'flex-1 flex pt-[20px] mobile:fixed mobile:inset-x-0 mobile:bottom-0 mobile:z-[600] mobile:max-h-[90%] mobile:p-0',
-                    current === 'global' && !hasMediaSettings && 'hidden'
+                    current === 'global' && !hasMediaSettings && !hasChannelSettings && 'hidden'
                   )}
                 >
                   <div className="flex-1 flex flex-col rounded-[12px] gap-[12px] overflow-hidden bg-newSettings mobile:rounded-none mobile:rounded-t-[24px] mobile:gap-0 mobile:pt-[8px] mobile:pb-[24px] mobile:bg-newBgColorInner mobile:animate-fade">
@@ -1081,7 +1081,7 @@ export const ManageModal: FC<AddEditModalProps> = (props) => {
                       />
                     </div>
                     <style>
-                      {`#social-settings [data-id="${current}"] {display: block !important;}`}
+                      {`${current === 'global' ? '#social-settings > div {display: block !important;}' : `#social-settings [data-id="${current}"] {display: block !important;}`}`}
                     </style>
                   </div>
                 </div>
