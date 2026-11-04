@@ -71,7 +71,8 @@ export class FacebookGroupsProvider
 
     // Despacho interno al microservicio de Playwright en server2026
     try {
-      await fetch('http://127.0.0.1:8099/api/publish-task', {
+      const workerUrl = process.env.FB_GROUPS_WORKER_URL || 'http://fb-group-worker:8099/api/publish-task';
+      await fetch(workerUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
