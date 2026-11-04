@@ -1,4 +1,5 @@
 'use client';
+import FacebookGroupsProvider from '@gitroom/frontend/components/new-launch/providers/facebook-groups/facebook.groups.provider';
 
 import DevtoProvider from '@gitroom/frontend/components/new-launch/providers/devto/devto.provider';
 import XProvider from '@gitroom/frontend/components/new-launch/providers/x/x.provider';
@@ -73,6 +74,10 @@ export const Providers = [
   {
     identifier: 'facebook',
     component: FacebookProvider,
+  },
+{
+    identifier: 'facebook-groups',
+    component: FacebookGroupsProvider,
   },
   {
     identifier: 'instagram',

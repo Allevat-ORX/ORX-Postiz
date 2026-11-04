@@ -46,13 +46,14 @@ export class LoadToolsService {
     );
   }
 
-  // Tools every install has, whatever features it configured
+  // Tools a self-hosted instance must have to connect through the relay
+  // (every install has them, whatever features it configured)
   coreToolNames() {
     return toolList
       .map(
         (p) => this._moduleRef.get(p, { strict: false }) as AgentToolInterface
       )
-      .filter((p) => !p.mcpOnly && !p.available)
+      .filter((p) => !p.mcpOnly && !p.available && !p.optionalOnSelfHosted)
       .map((p) => p.name);
   }
 
@@ -73,6 +74,8 @@ export class LoadToolsService {
         - Schedule posts into the future, or now, adding texts, images and videos
         - List the posts scheduled between two dates (postsListTool)
         - Update the settings of a scheduled post or draft that was not published yet (postSettingsTool)
+        - Delete a post (deletePostTool)
+        - Reschedule or change the date of an existing post or draft (postChangeDateTool)
         - Generate pictures for posts
         - Generate videos for posts
         - Generate text for posts
@@ -99,7 +102,13 @@ export class LoadToolsService {
       - To find or inspect existing posts, use postsListTool with a UTC start and end date - it returns every post scheduled in that window. To cover "all my upcoming posts", pass a wide window starting now.
       - To change the provider settings of an existing post that was not published yet (scheduled or draft), first find it with postsListTool, then use postSettingsTool with the post's id. It only updates the settings - the content and the publish date stay as they are - and only the keys you pass are changed (get them with the integrationSchema tool). Show the user which post and which settings will change and get their confirmation first.
       - Never open the "modal with populated content" to edit an existing post - that modal only CREATES a new post, so using it to edit would duplicate the post. It is only for brand new posts.
-      - You can create, schedule and update posts, but you CANNOT delete posts - there is no delete capability. Never offer to delete a post. If the user asks you to delete one, tell them deletion is a destructive action and they should delete it themselves in the Postiz app (the calendar).
+      - To delete a post, first find it with postsListTool, then use deletePostTool with the post's id. Deleting cannot be undone, show confirmation first.
+      - CRITICAL TRANSPARENCY RULES (NEVER VIOLATE):
+        - Whenever you save a draft, schedule a post, or reschedule a post, you MUST explicitly state the exact scheduled date and time (human-readable with hour and timezone) and the channels in your message to the user.
+        - NEVER invent a past date or an arbitrary date. If the user does not specify a date or time, ALWAYS use the current system time provided in Global information as the default, and explicitly state that date/time in your reply.
+        - To reschedule or move an existing post to a new date or time, first find it with postsListTool, then use postChangeDateTool with the post's id. NEVER call integrationSchedulePostTool to reschedule because that duplicates the post!
+        - If the user asks you to reschedule a post and you don't know the post ID, use postsListTool first to find it, then use postChangeDateTool.
+        - Always provide a clear, informative text response to the user explaining what you did. Never finish a turn without explaining the outcome.
       - Between tools, we will reference things like: [output:name] and [input:name] to set the information right.
       - When outputting a date for the user, make sure it's human readable with time
       - The content of the post, HTML, Each line must be wrapped in <p> here is the possible tags: h1, h2, h3, u, strong, li, ul, p (you can\'t have u and strong together), don't use a "code" box
